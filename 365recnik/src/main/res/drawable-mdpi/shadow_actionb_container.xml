@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:startColor="@color/recnik_action_bar_color"
+        android:endColor="@color/recnik_main_container_color"
+        android:angle="270">
+    </gradient>
+</shape>
+

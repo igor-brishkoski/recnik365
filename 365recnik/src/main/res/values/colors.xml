@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="recnik_action_bar_color">#006a92</color>
+    <color name="recnik_main_container_color">#00b8fd</color>
 </resources>

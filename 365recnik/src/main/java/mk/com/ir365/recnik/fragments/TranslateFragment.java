@@ -1,6 +1,7 @@
 package mk.com.ir365.recnik.fragments;
 
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -33,6 +34,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import mk.com.ir365.recnik.R;
+import mk.com.ir365.recnik.fund.RecnikApp;
+import mk.com.ir365.recnik.fund.RecnikConstant;
 import mk.com.ir365.recnik.listeners.SugestiiTextChangedListener;
 
 /**
@@ -44,6 +47,7 @@ import mk.com.ir365.recnik.listeners.SugestiiTextChangedListener;
  * create an instance of this fragment.
  *
  */
+
 public class TranslateFragment extends Fragment {
 
     private static final String TAG = TranslateFragment.class.getSimpleName();
@@ -76,6 +80,7 @@ public class TranslateFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_translate,null);
         word = (AutoCompleteTextView) view.findViewById(R.id.actv_word_for_translating);
         word.addTextChangedListener(new SugestiiTextChangedListener(word,""));
+        word.setTypeface(Typeface.createFromAsset(RecnikApp.getContext().getAssets(), RecnikConstant.ROBOTO_THIN));
         return view;
     }
 

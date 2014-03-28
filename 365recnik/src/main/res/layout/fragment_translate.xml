@@ -1,22 +1,100 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fragment_translate_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="mk.com.ir365.recnik.fragments.TranslateFragment">
 
-    <mk.com.ir365.recnik.customtextview.TypeFacedTextView
-        android:id="@+id/tftv_language_from"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:typeface="robotothin.ttf"
-        android:text="@string/hello_blank_fragment" />
 
-    <AutoCompleteTextView
-        android:id="@+id/actv_word_for_translating"
+
+    <RelativeLayout
+        android:id="@+id/rl_main_search_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="@dimen/activity_vertical_margin"
+        android:background="@color/recnik_main_container_color">
 
-        />
+        <ImageView
+            android:id="@+id/arrow"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/arrow"/>
 
-</FrameLayout>
+        <mk.com.ir365.recnik.customtextview.TypeFacedTextView
+            android:gravity="center"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@id/arrow"
+            android:id="@+id/tftv_language_from"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/main_languge_selected_size"
+            app:typeface="robotothin.ttf"
+            android:text="@string/hello_blank_fragment" />
+
+        <mk.com.ir365.recnik.customtextview.TypeFacedTextView
+            android:gravity="center"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@id/arrow"
+            android:id="@+id/tftv_language_to"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:typeface="robotothin.ttf"
+            android:textSize="@dimen/main_languge_selected_size"
+            android:text="@string/hello_blank_fragment" />
+
+        <LinearLayout
+            android:layout_below="@id/tftv_language_from"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:layout_height="wrap_content">
+
+            <AutoCompleteTextView
+                android:paddingTop="10dp"
+                android:layout_weight="0.9"
+                android:id="@+id/actv_word_for_translating"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                />
+
+            <ImageView
+                android:id="@+id/iv_search"
+                android:paddingTop="10dp"
+                android:layout_weight="0.1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_action_search"
+                />
+
+        </LinearLayout>
+
+
+
+
+        </RelativeLayout>
+
+    <ImageView
+        android:layout_below="@id/rl_main_search_container"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@drawable/shadow_container_listview"/>
+
+    <ListView
+        android:id="@+id/lv_search_results"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rl_main_search_container" />
+
+
+    <ImageView
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@drawable/shadow_actionb_container"/>
+
+
+</RelativeLayout>

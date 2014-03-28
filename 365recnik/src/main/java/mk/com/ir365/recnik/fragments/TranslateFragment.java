@@ -2,14 +2,38 @@ package mk.com.ir365.recnik.fragments;
 
 import android.app.Activity;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
+import org.apache.http.util.EntityUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+
 import mk.com.ir365.recnik.R;
+import mk.com.ir365.recnik.listeners.SugestiiTextChangedListener;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass.
@@ -22,6 +46,7 @@ import mk.com.ir365.recnik.R;
  */
 public class TranslateFragment extends Fragment {
 
+    private static final String TAG = TranslateFragment.class.getSimpleName();
     //instance of parent activity
     private OnTranslatingActionPerformed mListener;
 
@@ -48,7 +73,10 @@ public class TranslateFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_translate, container, false);
+        View view = inflater.inflate(R.layout.fragment_translate,null);
+        word = (AutoCompleteTextView) view.findViewById(R.id.actv_word_for_translating);
+        word.addTextChangedListener(new SugestiiTextChangedListener(word,""));
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -86,8 +114,8 @@ public class TranslateFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnTranslatingActionPerformed {
-
         public void getTranslation(String jazik, String zbor);
     }
+
 
 }

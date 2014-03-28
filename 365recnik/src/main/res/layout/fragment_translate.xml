@@ -6,9 +6,17 @@
     tools:context="mk.com.ir365.recnik.fragments.TranslateFragment">
 
     <mk.com.ir365.recnik.customtextview.TypeFacedTextView
+        android:id="@+id/tftv_language_from"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:typeface="robotothin.ttf"
         android:text="@string/hello_blank_fragment" />
+
+    <AutoCompleteTextView
+        android:id="@+id/actv_word_for_translating"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        />
 
 </FrameLayout>

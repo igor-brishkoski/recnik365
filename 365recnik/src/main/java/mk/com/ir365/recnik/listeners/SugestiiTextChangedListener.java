@@ -3,7 +3,6 @@ package mk.com.ir365.recnik.listeners;
 import android.os.AsyncTask;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
@@ -82,9 +81,9 @@ public class SugestiiTextChangedListener implements TextWatcher {
                 Document doc = Jsoup.parse(sug);
                 sugestii = new ArrayList<>();
                 Elements divs = doc.getElementsByTag("div");
-                int i=0;
+                int i = 0;
                 for (Element e : divs) {
-                    if(i%2==0)
+                    if (i % 2 == 0)
                         sugestii.add(e.getElementsByClass("word").text()
                                 .substring(1));
                     i++;

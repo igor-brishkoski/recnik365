@@ -8,6 +8,18 @@ public class Zbor {
     private String desc;
     private ArrayList<String> similarWords;
 
+    public Zbor() {
+        super();
+        similarWords = new ArrayList<String>();
+    }
+
+    public Zbor(String prevod, String desc, ArrayList<String> similarWords) {
+        super();
+        this.prevod = prevod;
+        this.desc = desc;
+        this.similarWords = similarWords;
+    }
+
     public String getPrevod() {
         return prevod;
     }
@@ -32,28 +44,15 @@ public class Zbor {
         this.similarWords = similarWords;
     }
 
-    public Zbor() {
-        super();
-        similarWords = new ArrayList<String>();
-    }
-
-    public Zbor(String prevod, String desc, ArrayList<String> similarWords) {
-        super();
-        this.prevod = prevod;
-        this.desc = desc;
-        this.similarWords = similarWords;
-    }
-
     @Override
     public String toString() {
         String s = "";
-        for(String z:similarWords){
-            s += z+",";
+        for (String z : similarWords) {
+            s += z + ",";
         }
 
-        return "Zbor [prevod=" + prevod + ", desc=" + desc + "]"+s;
+        return "Zbor [prevod=" + prevod + ", desc=" + desc + "]" + s;
     }
-
 
 
 }

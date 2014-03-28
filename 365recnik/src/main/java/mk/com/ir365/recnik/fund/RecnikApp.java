@@ -8,21 +8,9 @@ import android.preference.PreferenceManager;
 public class RecnikApp extends Application {
 
 
-    private final String TAG = RecnikApp.class.getSimpleName();
-
-
     private static SharedPreferences sharedPreferences;
     private static Context context;
-
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        context = this;
-
-    }
+    private final String TAG = RecnikApp.class.getSimpleName();
 
     /**
      * @return apps default SharedPrefrences
@@ -36,6 +24,15 @@ public class RecnikApp extends Application {
      */
     public static Context getContext() {
         return context;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        context = this;
+
     }
 
 

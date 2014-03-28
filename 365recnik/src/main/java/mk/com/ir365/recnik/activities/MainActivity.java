@@ -6,14 +6,23 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 
-import mk.com.ir365.recnik.NavigationDrawerFragment;
 import mk.com.ir365.recnik.R;
+import mk.com.ir365.recnik.customtextview.TypeFacedTextView;
+import mk.com.ir365.recnik.fragments.FromDialogFragment;
+import mk.com.ir365.recnik.fragments.NavigationDrawerFragment;
+import mk.com.ir365.recnik.fragments.ToDialogFragment;
 import mk.com.ir365.recnik.fragments.TranslateFragment;
-
+import mk.com.ir365.recnik.fund.RecnikConstant;
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, TranslateFragment.OnTranslatingActionPerformed {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks,
+        TranslateFragment.OnTranslatingActionPerformed,
+        FromDialogFragment.PrevediOdInterface,
+        ToDialogFragment.PrevediVoInterface {
+
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -31,7 +40,7 @@ public class MainActivity extends ActionBarActivity
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-        getSupportFragmentManager().beginTransaction().add(R.id.container,TranslateFragment.newInstance()).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.container, TranslateFragment.newInstance()).commit();
 
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
@@ -48,7 +57,6 @@ public class MainActivity extends ActionBarActivity
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(false);
-
     }
 
 
@@ -81,5 +89,47 @@ public class MainActivity extends ActionBarActivity
     @Override
     public void getTranslation(String jazik, String zbor) {
 
+    }
+
+    @Override
+    public void prevediOdJazik(String jazik) {
+        TypeFacedTextView tfvPrevediOd = (TypeFacedTextView) findViewById(R.id.tftv_language_from);
+        TypeFacedTextView tvPrevediVo = (TypeFacedTextView) findViewById(R.id.tftv_language_to);
+        ImageView arrow = (ImageView) findViewById(R.id.arrow);
+
+        tfvPrevediOd.setText(jazik);
+
+        switch (jazik) {
+            case "English":
+            case "Deutchs":
+            case "Français":
+            case "Shqip":
+            case "Eλληνικά":
+            case "Slovenščina":
+            case "Pусский":
+            case "Српски":
+            case "Türkçe": {
+                tvPrevediVo.setVisibility(View.VISIBLE);
+                arrow.setVisibility(View.VISIBLE);
+                tvPrevediVo.setText(RecnikConstant.makednoski[0]);
+                break;
+            }
+            case "Лексикон на изрази и зборови":
+            case "Правопис":
+            case "ИТ поимник (Eng->Мак)": {
+                tvPrevediVo.setVisibility(View.GONE);
+                arrow.setVisibility(View.GONE);
+                break;
+            }
+            case "Македонски":
+                tvPrevediVo.setText("English");
+
+        }
+    }
+
+    @Override
+    public void prevediVoJazik(String jazik) {
+        TypeFacedTextView tvPrevediVo = (TypeFacedTextView) findViewById(R.id.tftv_language_to);
+        tvPrevediVo.setText(jazik);
     }
 }

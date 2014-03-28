@@ -12,7 +12,7 @@ import android.os.Handler;
 
 import mk.com.ir365.recnik.R;
 
-public class SplashActivity extends Activity{
+public class SplashActivity extends Activity {
 
     private static final int DURATION = 1500;
 
@@ -28,7 +28,6 @@ public class SplashActivity extends Activity{
             @SuppressWarnings("deprecation")
             @Override
             public void run() {
-
 
 
                 if (isNetworkAvailable()) {
@@ -54,7 +53,8 @@ public class SplashActivity extends Activity{
                                                     int which) {
                                     finish();
                                 }
-                            });
+                            }
+                    );
 
                     // Showing Alert Message
                     alertDialog.show();

@@ -27,5 +27,6 @@ dependencies {
     compile 'com.android.support:support-v4:19.0.1'
     compile 'com.android.support:appcompat-v7:+'
     compile 'org.jsoup:jsoup:1.7.3'
+    compile 'com.nhaarman.listviewanimations:library:2.6.0'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }

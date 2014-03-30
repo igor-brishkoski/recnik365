@@ -13,6 +13,9 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+import android.widget.ListView;
+
+import com.nhaarman.listviewanimations.swinginadapters.prepared.SwingRightInAnimationAdapter;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -33,6 +36,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 import mk.com.ir365.recnik.R;
+import mk.com.ir365.recnik.adapters.WordsAdapter;
 import mk.com.ir365.recnik.customtextview.TypeFacedTextView;
 import mk.com.ir365.recnik.fund.RecnikApp;
 import mk.com.ir365.recnik.fund.RecnikConstant;
@@ -45,8 +49,11 @@ public class TranslateFragment extends Fragment {
     TypeFacedTextView tvPrevediOd;
     TypeFacedTextView tvPrevediVo;
     ImageView ivSearch;
+    ListView wordsList;
     AutoCompleteTextView word;
     ArrayList<Zbor> zborovi;
+    WordsAdapter wordsAdapter;
+    SwingRightInAnimationAdapter swingRightInAnimationAdapter;
     //instance of parent activity
     private OnTranslatingActionPerformed mListener;
 
@@ -59,13 +66,15 @@ public class TranslateFragment extends Fragment {
      * this fragment using the provided parameters.
      */
     public static TranslateFragment newInstance() {
-
         return new TranslateFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        zborovi = new ArrayList<>();
+        wordsAdapter = new WordsAdapter(zborovi);
+        swingRightInAnimationAdapter = new SwingRightInAnimationAdapter(wordsAdapter);
     }
 
     @Override
@@ -73,6 +82,7 @@ public class TranslateFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_translate, null);
+
         word = (AutoCompleteTextView) view.findViewById(R.id.actv_word_for_translating);
         word.addTextChangedListener(new SugestiiTextChangedListener(word, ""));
         word.setTypeface(Typeface.createFromAsset(RecnikApp.getContext().getAssets(), RecnikConstant.ROBOTO_THIN));
@@ -106,6 +116,11 @@ public class TranslateFragment extends Fragment {
                         InputMethodManager.HIDE_NOT_ALWAYS);
             }
         });
+
+        wordsList = (ListView) view.findViewById(R.id.lv_search_results);
+        swingRightInAnimationAdapter.setAbsListView(wordsList);
+
+        wordsList.setAdapter(swingRightInAnimationAdapter);
 
         return view;
     }
@@ -222,22 +237,16 @@ public class TranslateFragment extends Fragment {
                     "application/x-www-form-urlencoded;charset=UTF-8");
 
             postParams = new ArrayList<NameValuePair>();
-
             postParams.add(new BasicNameValuePair("jazik", params[0]));
             postParams.add(new BasicNameValuePair("zbor", params[1]));
 
             try {
-
                 UrlEncodedFormEntity en = new UrlEncodedFormEntity(postParams,
                         HTTP.UTF_8);
                 post.setEntity(en);
-
                 HttpResponse response = client.execute(post);
-
                 HttpEntity entity = response.getEntity();
-
                 html = EntityUtils.toString(entity, HTTP.UTF_8);
-
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             } catch (ClientProtocolException e) {
@@ -252,19 +261,14 @@ public class TranslateFragment extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-
             Document doc = Jsoup.parse(result);
-
             Elements divs = doc.getElementsByTag("div");
-
             zborovi = new ArrayList<Zbor>();
 
             for (int i = 0; i < divs.size(); i++) {
                 Zbor zbor = new Zbor();
-
                 zbor.setPrevod(divs.get(i).getElementsByClass("prevod").text());
                 zbor.setDesc(divs.get(i).getElementsByClass("desc").text());
-
                 if (zbor.getDesc().length() != 0) {
                     String simWords = divs.get(i).getElementsByClass("word")
                             .text();
@@ -272,7 +276,6 @@ public class TranslateFragment extends Fragment {
                     for (int j = 0; j < simw.length; j++) {
                         zbor.getSimilarWords().add(simw[j]);
                     }
-
                 }
                 zborovi.add(zbor);
             }
@@ -280,8 +283,7 @@ public class TranslateFragment extends Fragment {
             // ///////////////////////////////////////////////////////////
             if (zborovi.get(0).getPrevod().length() != 0) {
                 //TODO after we get all words
-                for (Zbor zbor : zborovi)
-                    Log.d(TAG, zbor.toString());
+                wordsAdapter.refresh(zborovi);
 
             } else {/*
                 TextView prevod = new TextView(getActivity());
@@ -295,10 +297,6 @@ public class TranslateFragment extends Fragment {
                 prevod.setPadding(10, 10, 0, 10);
                 mainLayout.addView(prevod);*/
             }
-
-
         }
-
     }
-
 }

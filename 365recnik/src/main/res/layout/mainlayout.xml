@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/activity_vertical_margin">
+
+    <mk.com.ir365.recnik.customtextview.TypeFacedTextView
+        android:id="@+id/tv_prevod"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/prevod_color"
+        android:textSize="25sp"/>
+
+    <mk.com.ir365.recnik.customtextview.TypeFacedTextView
+        android:layout_below="@id/tv_prevod"
+        android:id="@+id/zborovi_so_sl_znacenjce"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:text="@string/zbr_so_sl_znacenje"/>
+
+</LinearLayout>

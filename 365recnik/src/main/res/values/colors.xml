@@ -2,4 +2,6 @@
 <resources>
     <color name="recnik_action_bar_color">#006a92</color>
     <color name="recnik_main_container_color">#00b8fd</color>
+    <color name="prevod_color">#0a0007</color>
+    <color name="descrp_color">#b9b8bd</color>
 </resources>

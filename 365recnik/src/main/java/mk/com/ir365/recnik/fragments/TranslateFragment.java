@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import mk.com.ir365.recnik.R;
 import mk.com.ir365.recnik.adapters.WordsAdapter;
 import mk.com.ir365.recnik.customtextview.TypeFacedTextView;
+import mk.com.ir365.recnik.fund.InvokeWebService;
 import mk.com.ir365.recnik.fund.RecnikApp;
 import mk.com.ir365.recnik.fund.RecnikConstant;
 import mk.com.ir365.recnik.listeners.SugestiiTextChangedListener;
@@ -73,7 +74,7 @@ public class TranslateFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         zborovi = new ArrayList<>();
-        wordsAdapter = new WordsAdapter(zborovi);
+        wordsAdapter = new WordsAdapter(zborovi, this);
         swingRightInAnimationAdapter = new SwingRightInAnimationAdapter(wordsAdapter);
     }
 
@@ -81,7 +82,7 @@ public class TranslateFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_translate, null);
+        final View view = inflater.inflate(R.layout.fragment_translate, null);
 
         word = (AutoCompleteTextView) view.findViewById(R.id.actv_word_for_translating);
         word.addTextChangedListener(new SugestiiTextChangedListener(word, ""));
@@ -107,7 +108,9 @@ public class TranslateFragment extends Fragment {
         ivSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new InvokeWebService().execute(getLanguageType(),word.getText().toString());
+                //wordsAdapter = new WordsAdapter(zborovi, TranslateFragment.this);
+                //wordsList.setAdapter(wordsAdapter);
+                getTranslations();
                 Log.d(TAG,word.getText().toString()+" "+getLanguageType());
                 InputMethodManager inputManager = (InputMethodManager)
                         getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -224,79 +227,7 @@ public class TranslateFragment extends Fragment {
         public void getTranslation(String jazik, String zbor);
     }
 
-    private class InvokeWebService extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-            String html = "";
-            DefaultHttpClient client = new DefaultHttpClient();
-            HttpPost post = new HttpPost(
-                    "http://365.com.mk/recnik/upiti/prikazi.php");
-            ArrayList<NameValuePair> postParams;
-            post.setHeader("Content-Type",
-                    "application/x-www-form-urlencoded;charset=UTF-8");
-
-            postParams = new ArrayList<NameValuePair>();
-            postParams.add(new BasicNameValuePair("jazik", params[0]));
-            postParams.add(new BasicNameValuePair("zbor", params[1]));
-
-            try {
-                UrlEncodedFormEntity en = new UrlEncodedFormEntity(postParams,
-                        HTTP.UTF_8);
-                post.setEntity(en);
-                HttpResponse response = client.execute(post);
-                HttpEntity entity = response.getEntity();
-                html = EntityUtils.toString(entity, HTTP.UTF_8);
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            } catch (ClientProtocolException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return html;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            Document doc = Jsoup.parse(result);
-            Elements divs = doc.getElementsByTag("div");
-            zborovi = new ArrayList<Zbor>();
-
-            for (int i = 0; i < divs.size(); i++) {
-                Zbor zbor = new Zbor();
-                zbor.setPrevod(divs.get(i).getElementsByClass("prevod").text());
-                zbor.setDesc(divs.get(i).getElementsByClass("desc").text());
-                if (zbor.getDesc().length() != 0) {
-                    String simWords = divs.get(i).getElementsByClass("word")
-                            .text();
-                    String[] simw = simWords.split(" ");
-                    for (int j = 0; j < simw.length; j++) {
-                        zbor.getSimilarWords().add(simw[j]);
-                    }
-                }
-                zborovi.add(zbor);
-            }
-
-            // ///////////////////////////////////////////////////////////
-            if (zborovi.get(0).getPrevod().length() != 0) {
-                //TODO after we get all words
-                wordsAdapter.refresh(zborovi);
-
-            } else {/*
-                TextView prevod = new TextView(getActivity());
-                prevod.setText("НЕ Е ПРОНАЈДЕН ТАКОВ ЗБОР ВО БАЗАТА");
-                prevod.setTextSize(25);
-                prevod.setTextColor(Color.parseColor("#0a0007"));
-                // prevod.setId(5);
-                lp1 = new LayoutParams(LayoutParams.MATCH_PARENT,
-                        LayoutParams.WRAP_CONTENT);
-                prevod.setLayoutParams(lp1);
-                prevod.setPadding(10, 10, 0, 10);
-                mainLayout.addView(prevod);*/
-            }
-        }
+    public void getTranslations(){
+        new InvokeWebService(zborovi,wordsAdapter).execute(getLanguageType(),word.getText().toString());
     }
 }

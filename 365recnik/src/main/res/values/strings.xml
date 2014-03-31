@@ -12,5 +12,7 @@
     <string name="makedonski">English</string>
     <string name="prevedi_od">Преведи од</string>
     <string name="english">Македонски</string>
+    <string name="zbr_so_sl_znacenje">Зборови со слично значење</string>
+    <string name="ne_postoi_zborot">НЕ Е ПРОНАЈДЕН ТАКОВ ЗБОР ВО БАЗАТА</string>
 
 </resources>
